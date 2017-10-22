@@ -3,7 +3,7 @@ package blockchainForAccounts.entries
 class NickEntry(
 		/** hash of the public key */
 		val id: String,
-		/** if nick has not valid signature, this entry is invalid */
+		/** if nick has not valid signature, this entry is unacceptable */
 		val nick: String,
 		/** nick signature */
 		val signedNick: String

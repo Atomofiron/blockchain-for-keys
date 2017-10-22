@@ -5,8 +5,8 @@ import java.security.PublicKey
 class KeyEntry(
 		/** hash of the public key */
 		val id: String,
-		/** if this nick is not booked, this field must be empty, or this entry is invalid
-		 *  if this nick is booked by another account, this entry is invalid */
+		/** if this nick is not booked, this field must be empty, or this entry is unacceptable
+		 *  if this nick is booked by another account, this entry is unacceptable */
 		val nick: String,
 		/** public key */
 		val publicKey: PublicKey
