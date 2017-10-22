@@ -4,12 +4,13 @@ import blockchainForAccounts.entries.Entry
 import blockchainForAccounts.entries.KeyEntry
 import blockchainForAccounts.ByteUtils.toByteArray
 
-class Block(previousBlock: Block?) {
-	private val previousHash = previousBlock?.getHash() ?: "=[_initial__block_]="
+class Block private constructor(private val previousHash: String) {
 	private val timestamp = System.currentTimeMillis()
 	private val keyEntries = ArrayList<KeyEntry>()
 
-	constructor() : this(null)
+	constructor() : this("=[_initial__block_]=")
+
+	constructor(previousBlock: Block) : this(previousBlock.getHash())
 
 	fun add(entry: Entry): Boolean {
 		if (!entry.valid)
