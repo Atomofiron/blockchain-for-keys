@@ -31,8 +31,8 @@ object Main {
 		if (core.addKey(pair.public)) {
 			I.println("yeah")
 			I.println("id:		  " + ByteUtils.hash(pair.public.encoded))
-			I.println("public key:  " + ByteUtils.toBase64(pair.public.encoded))
-			I.println("private key: " + ByteUtils.toBase64(pair.private.encoded))
+			I.println("public key:  " + String(ByteUtils.toBase64(pair.public.encoded)))
+			I.println("private key: " + String(ByteUtils.toBase64(pair.private.encoded)))
 		} else
 			I.println("fck")
 	}
