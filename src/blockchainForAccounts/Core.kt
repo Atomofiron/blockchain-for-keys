@@ -10,7 +10,7 @@ class Core {
 	private var currentBlock: Block = Block()
 
 	fun addKey(key: PublicKey) =
-		add(KeyEntry(ByteUtils.hash(key.encoded), "", key, ""))
+		add(KeyEntry(ByteUtils.hash(key.encoded), "", key))
 
 	private fun add(entry: Entry): Boolean {
 		if (blocks.find { it.contains(entry) } != null)
