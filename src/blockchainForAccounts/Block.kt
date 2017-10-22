@@ -4,7 +4,7 @@ import blockchainForAccounts.entries.Entry
 import blockchainForAccounts.entries.KeyEntry
 import blockchainForAccounts.ByteUtils.toByteArray
 
-class Block private constructor(private val previousHash: String) {
+internal class Block private constructor(private val previousHash: String) {
 	private val timestamp = System.currentTimeMillis()
 	private val keyEntries = ArrayList<KeyEntry>()
 

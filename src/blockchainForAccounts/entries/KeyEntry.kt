@@ -2,7 +2,7 @@ package blockchainForAccounts.entries
 
 import java.security.PublicKey
 
-class KeyEntry(
+internal class KeyEntry(
 		/** hash of the public key */
 		val id: String,
 		/** if this nick is not booked, this field must be empty, or this entry is unacceptable

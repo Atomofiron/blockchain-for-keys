@@ -1,6 +1,6 @@
 package blockchainForAccounts.entries
 
-class BookingNickEntry(
+internal class BookingNickEntry(
 		/** hash of the nick */
 		val hashedNick: String,
 		/** nick signature */

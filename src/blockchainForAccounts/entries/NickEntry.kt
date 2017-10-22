@@ -1,6 +1,6 @@
 package blockchainForAccounts.entries
 
-class NickEntry(
+internal class NickEntry(
 		/** hash of the public key */
 		val id: String,
 		/** if this nick has not valid signature or
