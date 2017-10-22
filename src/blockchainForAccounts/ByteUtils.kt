@@ -17,13 +17,12 @@ object ByteUtils {
 		return String(hexChars)
 	}
 
-	fun toBase64(bytes: ByteArray) = Base64.getEncoder().encode(bytes)
+	fun toBase64(bytes: ByteArray): ByteArray = Base64.getEncoder().encode(bytes)
 
-	fun fromBase64(bytes: ByteArray) = Base64.getDecoder().decode(bytes)
+	fun fromBase64(bytes: ByteArray): ByteArray = Base64.getDecoder().decode(bytes)
 
 	fun hash(bytes: ByteArray): String
 			= String(toBase64(MessageDigest.getInstance("SHA-256").digest(bytes)))
 
-	fun Long.toByteArray() =
-			ByteBuffer.allocate(8).putLong(this).array()!!
+	fun Long.toByteArray(): ByteArray = ByteBuffer.allocate(8).putLong(this).array()
 }
