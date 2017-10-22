@@ -31,13 +31,15 @@ internal class Block private constructor(private val previousHash: String) {
 
 	fun isEmpty() = keyEntries.isEmpty()
 
-	private fun getHash(): String {
+	private fun getHash() = ByteUtils.hash(toByteArray())
+
+	private fun toByteArray(): ByteArray {
 		var bytes = byteArrayOf()
 
 		bytes += previousHash.toByteArray()
 		bytes += timestamp.toByteArray()
 		keyEntries.forEach { bytes += it.toByteArray() }
 
-		return ByteUtils.hash(bytes)
+		return bytes
 	}
 }
