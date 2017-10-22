@@ -8,7 +8,7 @@ class KeyEntry(
 		/** if this nick is not booked, this field must be empty, or this entry is invalid
 		 *  if this nick is booked by another account, this entry is invalid */
 		val nick: String,
-		/** publick key */
+		/** public key */
 		val publicKey: PublicKey
 ) : Entry() {
 	override val size = id.length + nick.length + publicKey.encoded.size
