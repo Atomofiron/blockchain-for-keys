@@ -2,6 +2,7 @@ package blockchainForAccounts
 
 import java.nio.ByteBuffer
 import java.security.MessageDigest
+import java.util.*
 
 object ByteUtils {
 	private val hexArray = "0123456789abcdef".toCharArray()
@@ -16,8 +17,12 @@ object ByteUtils {
 		return String(hexChars)
 	}
 
+	fun toBase64(bytes: ByteArray) = Base64.getEncoder().encode(bytes)
+
+	fun fromBase64(bytes: ByteArray) = Base64.getDecoder().decode(bytes)
+
 	fun hash(bytes: ByteArray): String
-			= byteArrayToHex(MessageDigest.getInstance("SHA-256").digest(bytes))
+			= String(toBase64(MessageDigest.getInstance("SHA-256").digest(bytes)))
 
 	fun Long.toByteArray() =
 			ByteBuffer.allocate(8).putLong(this).array()!!
