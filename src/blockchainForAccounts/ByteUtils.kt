@@ -3,6 +3,7 @@ package blockchainForAccounts
 import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.util.*
+import java.util.regex.Pattern
 
 object ByteUtils {
 	private val hexArray = "0123456789abcdef".toCharArray()
@@ -15,6 +16,19 @@ object ByteUtils {
 			hexChars[i * 2 + 1] = hexArray[x and 0x0f]
 		}
 		return String(hexChars)
+	}
+
+	fun hexToByteArray(hex: String): ByteArray? {
+		if (Pattern.compile("[^0-9a-fA-F]").matcher(hex).find())
+			return null
+
+		val hexChars = (if (hex.length % 2 == 1) "0" + hex else hex).toLowerCase().toCharArray()
+		val bytes = ByteArray(hexChars.size / 2)
+
+		for (i in hexChars.indices step 2)
+			bytes[i / 2] = (hexArray.indexOf(hexChars[i]) * 16 + hexArray.indexOf(hexChars[i + 1])).toByte()
+
+		return bytes
 	}
 
 	fun toBase64(bytes: ByteArray): ByteArray = Base64.getEncoder().encode(bytes)
