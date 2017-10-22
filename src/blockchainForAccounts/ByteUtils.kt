@@ -22,7 +22,7 @@ object ByteUtils {
 	fun fromBase64(bytes: ByteArray): ByteArray = Base64.getDecoder().decode(bytes)
 
 	fun hash(bytes: ByteArray): String
-			= String(toBase64(MessageDigest.getInstance("SHA-256").digest(bytes)))
+			= byteArrayToHex(MessageDigest.getInstance("SHA-1").digest(bytes))
 
 	fun Long.toByteArray(): ByteArray = ByteBuffer.allocate(8).putLong(this).array()
 }
