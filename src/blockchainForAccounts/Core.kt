@@ -1,32 +1,19 @@
 package blockchainForAccounts
 
-import blockchainForAccounts.entries.Entry
-import blockchainForAccounts.entries.KeyEntry
+import blockchainForAccounts.models.*
+import java.security.PrivateKey
 import java.security.PublicKey
-import java.util.*
 
-class Core {
-	private val blocks = ArrayList<Block>()
-	private var currentBlock: Block = Block()
+class Core(dirPath: String) {
+	private val block = BlockWrapper.newInstance(dirPath)
 
-	fun addKey(key: PublicKey) =
-		add(KeyEntry(ByteUtils.hash(key.encoded), "", key))
+	fun bookNick(nick: String, key: PrivateKey) =
+			block.add(BookingNickEntry(nick, key))
 
-	private fun add(entry: Entry): Boolean {
-		if (blocks.find { it.contains(entry) } != null)
-			return false
+	fun addKey(nick: String, key: PublicKey) =
+			block.add(KeyEntry(nick, key))
 
-		return currentBlock.add(entry)
-	}
+	fun releaseBlock() = block.release()
 
-	fun releaseBlock(): Boolean {
-		if (currentBlock.isEmpty())
-			return false
-
-		val block = currentBlock
-		blocks.add(block)
-		currentBlock = Block(block)
-
-		return true
-	}
+	fun close() = block.close()
 }
