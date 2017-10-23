@@ -19,7 +19,7 @@ internal class BlockWrapper(block: Block, private val db: DBWrapper, private var
 		if (entries.isEmpty())
 			return false
 
-		db.put(KEY_COUNTER_FOR_BLOCKS, (++count).toByteArray())
+		db.put(KEY_BLOCKS_COUNTER, (++count).toByteArray())
 		db.put(count.toByteArray(), toByteArray())
 		entries.forEach { it.store(db) }
 		entries.clear()
@@ -32,11 +32,11 @@ internal class BlockWrapper(block: Block, private val db: DBWrapper, private var
 	companion object {
 		private val BASE_DIR_NAME = "/accounts"
 		private val INITIAL = "[_________initial________block_________]"
-		private val KEY_COUNTER_FOR_BLOCKS = "C".toByteArray()
+		private val KEY_BLOCKS_COUNTER = "blocks_counter".toByteArray()
 
 		fun newInstance(parentPath: String): BlockWrapper {
 			val db = DBWrapper(File(parentPath + BASE_DIR_NAME))
-			val counter = db.get(KEY_COUNTER_FOR_BLOCKS)
+			val counter = db.get(KEY_BLOCKS_COUNTER)
 			val previousBlock = if (counter.isEmpty()) null else db.get(counter)
 			val previousHash = if (previousBlock == null) INITIAL else ByteUtils.hashHex(previousBlock)
 
