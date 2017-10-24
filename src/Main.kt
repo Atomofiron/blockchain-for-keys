@@ -27,6 +27,16 @@ object Main {
 		}
 	}
 
+	private fun readNick(): String {
+		I.println("Input nick:")
+		val nick = scan.next(".*")
+
+		if (nick.length > 1 && (nick.startsWith("\"") && nick.endsWith("\"") || nick.startsWith("\'") && nick.endsWith("\'")))
+			return nick.replace(Regex("^.|.$"), "")
+
+		return nick
+	}
+
 	private fun init() {
 		I.println("/home/atomofiron/Android/\nInput dir path:")
 		val dir = File(scan.next())
@@ -39,8 +49,7 @@ object Main {
 	}
 
 	private fun bookNick() {
-		I.println("Input nick:")
-		val nick = scan.next()
+		val nick = readNick()
 
 		if (core.bookNick(nick, keyPair.private))
 			I.println("yeah")
@@ -60,8 +69,7 @@ object Main {
 	}
 
 	private fun addKey() {
-		I.println("Input nick:")
-		if (core.addKey(scan.next(), keyPair.public))
+		if (core.addKey(readNick(), keyPair.public))
 			I.println("yeah")
 		else
 			I.println("fck")
