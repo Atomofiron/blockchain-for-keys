@@ -16,7 +16,7 @@ open internal class Key private constructor(
 
 	constructor(nick: String, key: PublicKey) : this(nick, ByteUtils.toBase64String(key.encoded))
 
-	fun id() = ByteUtils.fromBase64String(publicKey)
+	fun id() = ByteUtils.hash(ByteUtils.fromBase64String(publicKey))
 
 	fun generate() = KeyFactory.getInstance(ALGORITHM)
 			.generatePublic(X509EncodedKeySpec(ByteUtils.fromBase64String(publicKey)))!!
