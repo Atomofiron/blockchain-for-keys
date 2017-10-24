@@ -6,8 +6,8 @@ import java.security.PrivateKey
 import java.util.*
 
 internal class BookingNickEntry(nick: String, key: PrivateKey) : Entry {
-	/** hashKey of the nick */
-	private val hashedNick = nick.toByteArray()
+	/** hash of the nick */
+	private val hashedNick = ByteUtils.hash(nick.toByteArray())
 	/** nick signature */
 	private val signedNick = ByteUtils.sign(nick.toByteArray(), key)
 
