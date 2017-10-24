@@ -8,7 +8,7 @@ import java.util.*
 
 internal class KeyEntry constructor(nick: String, key: PublicKey) : Key(nick, key), Entry {
 	private val id = id()
-	private var signedNick: String = "" // Base64 todo test empty
+	private var signedNick: String = "" // Base64
 
 	fun signNick(key: PrivateKey): KeyEntry {
 		signedNick = ByteUtils.toBase64String(ByteUtils.sign(nick.toByteArray(), key))
