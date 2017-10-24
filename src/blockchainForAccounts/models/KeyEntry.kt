@@ -11,12 +11,19 @@ internal class KeyEntry(nick: String, keyPair: KeyPair) : Key(nick, Key.encode(k
 
 	override fun entryKeyHex() = ByteUtils.byteArrayToHex(id)
 
-	/* проверка: id не дублируется, ник пустой и подписан, или забронирован аккаунтом с этим ключём */
-	override fun isAcceptable(db: DBWrapper): Boolean =
-			db.get(id).isEmpty() &&
-					(nick.isEmpty() && ByteUtils.verify(nick.toByteArray(), decode(publicKey), signedNick) ||
-							!db.get(ByteUtils.hash(nick.toByteArray())).isEmpty() &&
-							ByteUtils.verify(nick.toByteArray(), Key.decode(publicKey), db.get(ByteUtils.hash(nick.toByteArray()))))
+	override fun isAcceptable(db: DBWrapper): Boolean {
+		// id не должен дублироваться
+		if (!db.get(id).isEmpty())
+			return false
+
+		// ник пустой и подписан
+		if (nick.isEmpty() && ByteUtils.verify(nick.toByteArray(), decode(publicKey), signedNick))
+			return true
+
+		// забронирован аккаунтом с этим ключём
+		val signature = db.get(ByteUtils.hash(nick.toByteArray()))
+		return !signature.isEmpty() && ByteUtils.verify(nick.toByteArray(), Key.decode(publicKey), signature)
+	}
 
 	override fun store(db: DBWrapper): Boolean {
 		var put = db.put(id, toByteArray())

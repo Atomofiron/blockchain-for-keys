@@ -10,10 +10,10 @@ internal class BlockWrapper(block: Block, private val db: DBWrapper, private var
 	private val entries = ArrayList<Entry>()
 
 	fun add(entry: Entry): Boolean =
-			if (entry.isAcceptable(db) && !entries.contains(entry)) {
-				!entries.contains(entry) && entries.add(entry) && entryKeys.add(entry.entryKeyHex())
-			} else
-				false
+			entry.isAcceptable(db) &&
+					!entries.contains(entry) &&
+					entries.add(entry) &&
+					entryKeys.add(entry.entryKeyHex())
 
 	fun release(): Boolean {
 		if (entries.isEmpty())
