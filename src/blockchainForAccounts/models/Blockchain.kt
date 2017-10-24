@@ -34,7 +34,7 @@ internal class Blockchain constructor(parentPath: String) {
 			return false
 
 		val bytes = block.toByteArray()
-		db.put(block.getKeyHash(), bytes)
+		db.put(block.getPrevHash(), bytes)
 		entries.forEach { it.store(db) }
 		entries.clear()
 
@@ -50,17 +50,17 @@ internal class Blockchain constructor(parentPath: String) {
 		private val BASE_DIR_NAME = "/accounts"
 	}
 
-	private class Block(@SerializedName("h") private var previousHash: String = INITIAL) {
+	private class Block(@SerializedName("h") private var prevHash: String = INITIAL) {
 		@SerializedName("t")
 		private val timestamp = System.currentTimeMillis()
 		@SerializedName("s")
 		private val entryKeys = ArrayList<String>()
 
 		constructor(previousBlock: ByteArray) : this() {
-			previousHash = ByteUtils.hashHex(previousBlock)
+			prevHash = ByteUtils.hashHex(previousBlock)
 		}
 
-		fun getKeyHash() = ByteUtils.hexToByteArray(previousHash) ?: previousHash.toByteArray()
+		fun getPrevHash() = ByteUtils.hexToByteArray(prevHash) ?: prevHash.toByteArray()
 
 		fun add(entryKeyHex: String) = entryKeys.add(entryKeyHex)
 
