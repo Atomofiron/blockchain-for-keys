@@ -69,7 +69,7 @@ object Main {
 	}
 
 	private fun addKey() {
-		if (core.addKey(readNick(), keyPair.public))
+		if (core.addKey(readNick(), keyPair))
 			I.println("yeah")
 		else
 			I.println("fck")

@@ -2,19 +2,20 @@ package blockchainForAccounts.models
 
 import blockchainForAccounts.ByteUtils
 import blockchainForAccounts.DBWrapper
-import java.security.PublicKey
+import java.security.KeyPair
 
-internal class KeyEntry(nick: String, key: PublicKey) : Key(nick, Key.encode(key)), Entry {
+internal class KeyEntry(nick: String, keyPair: KeyPair) : Key(nick, Key.encode(keyPair.public)), Entry {
 	private val id = id()
+	private val signedNick = ByteUtils.sign(nick.toByteArray(), keyPair.private)
 
 	private fun keyBytes() = ByteUtils.hexToByteArray(id)!!
 
 	override fun keyHex() = id
 
-	/* проверка: id не дублируется, ник пустой или забронирован аккаунтом с этим ключём */
+	/* проверка: id не дублируется, ник пустой и подписан, или забронирован аккаунтом с этим ключём */
 	override fun isAcceptable(db: DBWrapper): Boolean =
 			db.get(keyBytes()).isEmpty() &&
-					(nick.isEmpty() ||
+					(nick.isEmpty() && ByteUtils.verify(nick.toByteArray(), decode(publicKey), signedNick) ||
 							!db.get(ByteUtils.hash(nick.toByteArray())).isEmpty() &&
 							ByteUtils.verify(nick.toByteArray(), Key.decode(publicKey), db.get(ByteUtils.hash(nick.toByteArray()))))
 
