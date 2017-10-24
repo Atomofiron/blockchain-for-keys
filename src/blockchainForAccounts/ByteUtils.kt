@@ -1,6 +1,5 @@
 package blockchainForAccounts
 
-import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.security.PrivateKey
 import java.security.PublicKey
@@ -41,10 +40,6 @@ object ByteUtils {
 	fun hash(bytes: ByteArray): ByteArray = MessageDigest.getInstance("SHA-1").digest(bytes)
 
 	fun hashHex(bytes: ByteArray): String = byteArrayToHex(hash(bytes))
-
-	fun Long.toByteArray(): ByteArray = ByteBuffer.allocate(8).putLong(this).array()
-
-	fun ByteArray.toLong(): Long = ByteBuffer.wrap(this).long
 
 	fun sign(bytes: ByteArray, key: PrivateKey): ByteArray {
 		val rsa = Signature.getInstance("SHA1withRSA")
