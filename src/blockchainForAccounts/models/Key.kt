@@ -15,7 +15,7 @@ open internal class Key constructor(
 		protected val publicKey: String
 ) {
 
-	fun id() = ByteUtils.hashHex(ByteUtils.fromBase64(publicKey.toByteArray()))
+	fun id() = ByteUtils.fromBase64(publicKey.toByteArray())
 
 	fun toByteArray() = GsonS.instance.toJson(this).toByteArray()
 
