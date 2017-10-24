@@ -44,7 +44,7 @@ object ByteUtils {
 
 	fun Long.toByteArray(): ByteArray = ByteBuffer.allocate(8).putLong(this).array()
 
-	fun ByteArray.toLong(): Long = ByteBuffer.allocate(8).put(this).long
+	fun ByteArray.toLong(): Long = ByteBuffer.wrap(this).long
 
 	fun sign(bytes: ByteArray, key: PrivateKey): ByteArray {
 		val rsa = Signature.getInstance("SHA1withRSA")
