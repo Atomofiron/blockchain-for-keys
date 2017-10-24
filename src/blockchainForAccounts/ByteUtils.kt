@@ -34,8 +34,6 @@ object ByteUtils {
 		return bytes
 	}
 
-	fun toBase64(bytes: ByteArray): ByteArray = Base64.getEncoder().encode(bytes)
-
 	fun toBase64String(bytes: ByteArray): String = Base64.getEncoder().encodeToString(bytes)
 
 	fun fromBase64String(data: String): ByteArray = Base64.getDecoder().decode(data)

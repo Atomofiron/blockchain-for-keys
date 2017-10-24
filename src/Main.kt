@@ -64,8 +64,8 @@ object Main {
 		keyPair = generator.generateKeyPair()
 
 		I.println("id:	        " + ByteUtils.hashHex(keyPair.public.encoded))
-		I.println("public key:  " + String(ByteUtils.toBase64(keyPair.public.encoded)))
-		I.println("private key: " + String(ByteUtils.toBase64(keyPair.private.encoded)))
+		I.println("public key:  " + ByteUtils.toBase64String(keyPair.public.encoded))
+		I.println("private key: " + ByteUtils.toBase64String(keyPair.private.encoded))
 	}
 
 	private fun addKeyWithNick() {
