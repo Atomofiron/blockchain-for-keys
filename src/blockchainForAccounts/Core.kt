@@ -11,7 +11,7 @@ class Core(dirPath: String) {
 			block.add(BookingNickEntry(nick, key))
 
 	fun addKey(nick: String, keyPair: KeyPair) =
-			block.add(KeyEntry(nick, keyPair))
+			block.add(KeyEntry(nick, keyPair.public).signNick(keyPair.private))
 
 	fun releaseBlock() = block.release()
 
