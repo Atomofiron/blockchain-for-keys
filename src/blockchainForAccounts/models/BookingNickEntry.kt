@@ -3,22 +3,21 @@ package blockchainForAccounts.models
 import blockchainForAccounts.ByteUtils
 import blockchainForAccounts.DBWrapper
 import java.security.PrivateKey
+import java.util.*
 
 internal class BookingNickEntry(nick: String, key: PrivateKey) : Entry {
 	/** hashKey of the nick */
-	val hashedNick: String = ByteUtils.hashHex(nick.toByteArray())
+	private val hashedNick = nick.toByteArray()
 	/** nick signature */
-	val signedNick: String = ByteUtils.byteArrayToHex(ByteUtils.sign(nick.toByteArray(), key))
+	private val signedNick = ByteUtils.sign(nick.toByteArray(), key)
 
-	private fun keyBytes() = ByteUtils.hexToByteArray(hashedNick)!!
-
-	override fun keyHex() = hashedNick
+	override fun keyHex() = ByteUtils.byteArrayToHex(hashedNick)
 
 	/* проверка: ник не был уже забронирован */
-	override fun isAcceptable(db: DBWrapper) = db.get(keyBytes()).isEmpty()
+	override fun isAcceptable(db: DBWrapper) = db.get(hashedNick).isEmpty()
 
-	override fun store(db: DBWrapper) = db.put(keyBytes(), ByteUtils.hexToByteArray(signedNick)!!)
+	override fun store(db: DBWrapper) = db.put(hashedNick, signedNick)
 
 	override fun equals(other: Any?): Boolean =
-			other != null && other is BookingNickEntry && hashedNick == other.hashedNick
+			other != null && other is BookingNickEntry && Arrays.equals(hashedNick, other.hashedNick)
 }
