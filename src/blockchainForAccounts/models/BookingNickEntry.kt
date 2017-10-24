@@ -11,7 +11,7 @@ internal class BookingNickEntry(nick: String, key: PrivateKey) : Entry {
 	/** nick signature */
 	private val signedNick = ByteUtils.sign(nick.toByteArray(), key)
 
-	override fun keyHex() = ByteUtils.byteArrayToHex(hashedNick)
+	override fun entryKeyHex() = ByteUtils.byteArrayToHex(hashedNick)
 
 	/* проверка: ник не был уже забронирован */
 	override fun isAcceptable(db: DBWrapper) = db.get(hashedNick).isEmpty()

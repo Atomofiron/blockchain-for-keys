@@ -9,7 +9,7 @@ internal class KeyEntry(nick: String, keyPair: KeyPair) : Key(nick, Key.encode(k
 	private val id = id()
 	private val signedNick = ByteUtils.sign(nick.toByteArray(), keyPair.private)
 
-	override fun keyHex() = ByteUtils.byteArrayToHex(id)
+	override fun entryKeyHex() = ByteUtils.byteArrayToHex(id)
 
 	/* проверка: id не дублируется, ник пустой и подписан, или забронирован аккаунтом с этим ключём */
 	override fun isAcceptable(db: DBWrapper): Boolean =

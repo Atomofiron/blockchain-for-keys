@@ -9,10 +9,10 @@ open internal class Block(
 		@SerializedName("t")
 		private val timestamp: Long,
 		@SerializedName("s")
-		protected val hashes: ArrayList<String>
+		protected val entryKeys: ArrayList<String>
 ) {
 
-	constructor(block: Block) : this(block.previousHash, block.timestamp, block.hashes)
+	constructor(block: Block) : this(block.previousHash, block.timestamp, block.entryKeys)
 
 	fun toByteArray() = GsonS.instance.toJson(this).toByteArray()
 

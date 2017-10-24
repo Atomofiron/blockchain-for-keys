@@ -11,7 +11,7 @@ internal class BlockWrapper(block: Block, private val db: DBWrapper, private var
 
 	fun add(entry: Entry): Boolean =
 			if (entry.isAcceptable(db) && !entries.contains(entry)) {
-				!entries.contains(entry) && entries.add(entry) && hashes.add(entry.keyHex())
+				!entries.contains(entry) && entries.add(entry) && entryKeys.add(entry.entryKeyHex())
 			} else
 				false
 
