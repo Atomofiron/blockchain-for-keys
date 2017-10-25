@@ -41,7 +41,7 @@ class DBWrapper(file: File) {
 
 	fun get(key: ByteArray): ByteArray = try { db.get(key) } catch (e: Exception) { byteArrayOf() }
 
-	fun contains(key: ByteArray) = !get(key).isEmpty()
+	fun containsKey(key: ByteArray) = !get(key).isEmpty()
 
 	fun containsValue(value: ByteArray): Boolean {
 		val it: DBIterator = db.iterator()
