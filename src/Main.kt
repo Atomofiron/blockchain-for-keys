@@ -16,7 +16,8 @@ object Main {
 				"init" -> init()
 				"genKeys" -> genKeys()
 				"bookNick" -> bookNick()
-				"addKey" -> addKeyWithNick()
+				"addKey" -> addKey()
+				"addNick" -> addNick()
 				"release" -> release()
 				"q" -> {
 					core.close()
@@ -68,8 +69,15 @@ object Main {
 		I.println("private key: " + ByteUtils.toBase64String(keyPair.private.encoded))
 	}
 
-	private fun addKeyWithNick() {
-		if (core.addKey(readNick(), keyPair))
+	private fun addKey() {
+		if (core.addKey(keyPair.public))
+			I.println("yeah")
+		else
+			I.println("fck")
+	}
+
+	private fun addNick() {
+		if (core.addNick(readNick(), ByteUtils.hash(keyPair.public.encoded)))
 			I.println("yeah")
 		else
 			I.println("fck")

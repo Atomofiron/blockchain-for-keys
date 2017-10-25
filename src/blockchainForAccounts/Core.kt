@@ -1,8 +1,8 @@
 package blockchainForAccounts
 
 import blockchainForAccounts.models.*
-import java.security.KeyPair
 import java.security.PrivateKey
+import java.security.PublicKey
 
 class Core(dirPath: String) {
 	private val blockchain = Blockchain(dirPath)
@@ -10,11 +10,9 @@ class Core(dirPath: String) {
 	fun bookNick(nick: String, key: PrivateKey) =
 			blockchain.add(BookingNickEntry(nick, key))
 
-	fun addKey(nick: String, keyPair: KeyPair) =
-			if (nick.isEmpty())
-				blockchain.add(KeyEntry(nick, keyPair.public).signNick(keyPair.private))
-			else
-				blockchain.add(KeyEntry(nick, keyPair.public))
+	fun addKey(key: PublicKey) = blockchain.add(KeyEntry(key.encoded))
+
+	fun addNick(nick: String, id: ByteArray) = blockchain.add(NickEntry(nick, id))
 
 	fun releaseBlock() = blockchain.release()
 

@@ -6,18 +6,18 @@ import java.security.PrivateKey
 import java.util.*
 
 internal class BookingNickEntry(nick: String, key: PrivateKey) : Entry {
-	/** hash of the nick */
-	private val hashedNick = ByteUtils.hash(nick.toByteArray())
-	/** nick signature */
-	private val signedNick = ByteUtils.sign(nick.toByteArray(), key)
+	/** twice hashed nick */
+	private val twiceHashedNick = ByteUtils.hash(ByteUtils.hash(nick.toByteArray()))
+	/** hashed nick signature */
+	private val signedHashedNick = ByteUtils.sign(ByteUtils.hash(nick.toByteArray()), key)
 
-	override fun entryKeyHex() = ByteUtils.byteArrayToHex(hashedNick)
+	override fun entryKeyHex() = ByteUtils.byteArrayToHex(twiceHashedNick)
 
 	/* проверка: ник не был уже забронирован */
-	override fun isAcceptable(db: DBWrapper) = db.get(hashedNick).isEmpty()
+	override fun isAcceptable(db: DBWrapper) = db.get(twiceHashedNick).isEmpty()
 
-	override fun store(db: DBWrapper) = db.put(hashedNick, signedNick)
+	override fun store(db: DBWrapper) = db.put(twiceHashedNick, signedHashedNick)
 
 	override fun equals(other: Any?): Boolean =
-			other != null && other is BookingNickEntry && Arrays.equals(hashedNick, other.hashedNick)
+			other is BookingNickEntry && Arrays.equals(twiceHashedNick, other.twiceHashedNick)
 }
