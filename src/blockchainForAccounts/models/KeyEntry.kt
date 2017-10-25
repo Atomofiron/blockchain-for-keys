@@ -9,6 +9,8 @@ internal class KeyEntry(private val publicKey: ByteArray) :  Entry {
 
 	override fun entryKeyHex() = ByteUtils.byteArrayToHex(id)
 
+	override fun entryHashHex() = entryKeyHex()
+
 	override fun isAcceptable(db: DBWrapper) = db.get(id).isEmpty()
 
 	override fun store(db: DBWrapper) = db.put(id, publicKey)

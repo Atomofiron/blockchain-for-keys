@@ -11,6 +11,8 @@ class NickEntry(nick: String, private val id: ByteArray) : Entry {
 
 	override fun entryKeyHex() = ByteUtils.byteArrayToHex(hashedNick)
 
+	override fun entryHashHex() = ByteUtils.byteArrayToHex(id)
+
 	override fun isAcceptable(db: DBWrapper): Boolean {
 		val signature = db.get(ByteUtils.hash(hashedNick))
 		val publicKey = db.get(id)

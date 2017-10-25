@@ -26,8 +26,8 @@ internal class Blockchain constructor(parentPath: String) {
 	fun add(entry: Entry): Boolean =
 			entry.isAcceptable(db) &&
 					!entries.contains(entry) &&
-					entries.add(entry) &&
-					block.add(entry.entryKeyHex())
+					block.add(entry) &&
+					entries.add(entry) // always true
 
 	fun release(): Boolean {
 		if (entries.isEmpty())
@@ -54,7 +54,7 @@ internal class Blockchain constructor(parentPath: String) {
 		@SerializedName("t")
 		private val timestamp = System.currentTimeMillis()
 		@SerializedName("s")
-		private val entryKeys = ArrayList<String>()
+		private val entryKeyValueMap = HashMap<String, String>()
 
 		constructor(previousBlock: ByteArray) : this() {
 			prevHash = ByteUtils.hashHex(previousBlock)
@@ -62,7 +62,11 @@ internal class Blockchain constructor(parentPath: String) {
 
 		fun getPrevHash() = ByteUtils.hexToByteArray(prevHash) ?: prevHash.toByteArray()
 
-		fun add(entryKeyHex: String) = entryKeys.add(entryKeyHex)
+		fun add(entry: Entry): Boolean {
+			val key = entry.entryKeyHex()
+			return !entryKeyValueMap.containsKey(key) &&
+					entryKeyValueMap.put(key, entry.entryHashHex()) == null
+		}
 
 		fun toByteArray() = GsonS.instance.toJson(this).toByteArray()
 

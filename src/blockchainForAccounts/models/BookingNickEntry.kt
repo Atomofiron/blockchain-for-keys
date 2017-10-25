@@ -13,6 +13,8 @@ internal class BookingNickEntry(nick: String, key: PrivateKey) : Entry {
 
 	override fun entryKeyHex() = ByteUtils.byteArrayToHex(twiceHashedNick)
 
+	override fun entryHashHex() = ByteUtils.hashHex(signedHashedNick)
+
 	/* проверка: ник не был уже забронирован */
 	override fun isAcceptable(db: DBWrapper) = db.get(twiceHashedNick).isEmpty()
 
