@@ -2,8 +2,6 @@ package blockchainForAccounts.models
 
 import blockchainForAccounts.ByteUtils
 import blockchainForAccounts.DBWrapper
-import java.security.KeyFactory
-import java.security.spec.X509EncodedKeySpec
 import java.util.*
 
 class NickEntry(nick: String, private val id: ByteArray) : Entry {
@@ -26,18 +24,11 @@ class NickEntry(nick: String, private val id: ByteArray) : Entry {
 			return false
 
 		// верификация подписи забронированного ника с использованием зарегистрированного ключа
-		return ByteUtils.verify(hashedNick, generate(publicKey), signature)
+		return ByteUtils.verify(hashedNick, ByteUtils.generatePublic(publicKey), signature)
 	}
 
 	override fun store(db: DBWrapper) = db.put(hashedNick, id)
 
 	override fun equals(other: Any?) = other is NickEntry &&
 			(Arrays.equals(hashedNick, other.hashedNick) || Arrays.equals(id, other.id))
-
-	companion object {
-		private val ALGORITHM = "RSA"
-
-		fun generate(publicKey: ByteArray) = KeyFactory.getInstance(ALGORITHM)
-				.generatePublic(X509EncodedKeySpec(publicKey))!!
-	}
 }

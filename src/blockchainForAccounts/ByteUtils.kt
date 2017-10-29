@@ -1,13 +1,14 @@
 package blockchainForAccounts
 
-import java.security.MessageDigest
-import java.security.PrivateKey
-import java.security.PublicKey
-import java.security.Signature
+import java.security.*
+import java.security.spec.X509EncodedKeySpec
 import java.util.*
 import java.util.regex.Pattern
 
 object ByteUtils {
+	private val RSA = "RSA"
+	private val SHA_1 = "SHA-1"
+	private val SHA1_WITH_RSA = "SHA1withRSA"
 	private val hexArray = "0123456789abcdef".toCharArray()
 
 	fun byteArrayToHex(bytes: ByteArray): String {
@@ -37,21 +38,24 @@ object ByteUtils {
 
 	fun fromBase64String(data: String): ByteArray = Base64.getDecoder().decode(data)
 
-	fun hash(bytes: ByteArray): ByteArray = MessageDigest.getInstance("SHA-1").digest(bytes)
+	fun hash(bytes: ByteArray): ByteArray = MessageDigest.getInstance(SHA_1).digest(bytes)
 
 	fun hashHex(bytes: ByteArray): String = byteArrayToHex(hash(bytes))
 
 	fun sign(bytes: ByteArray, key: PrivateKey): ByteArray {
-		val rsa = Signature.getInstance("SHA1withRSA")
+		val rsa = Signature.getInstance(SHA1_WITH_RSA)
 		rsa.initSign(key)
 		rsa.update(bytes)
 		return rsa.sign()
 	}
 
 	fun verify(bytes: ByteArray, key: PublicKey, sign: ByteArray): Boolean {
-		val rsa = Signature.getInstance("SHA1withRSA")
+		val rsa = Signature.getInstance(SHA1_WITH_RSA)
 		rsa.initVerify(key)
 		rsa.update(bytes)
 		return rsa.verify(sign)
 	}
+
+	fun generatePublic(publicKey: ByteArray) =
+			KeyFactory.getInstance(RSA).generatePublic(X509EncodedKeySpec(publicKey))!!
 }
