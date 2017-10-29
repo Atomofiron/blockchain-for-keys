@@ -16,7 +16,7 @@ internal class BookingNickEntry(nick: String, key: PrivateKey) : Entry {
 	override fun entryHashHex() = ByteUtils.hashHex(signedHashedNick)
 
 	/* проверка: ник не был уже забронирован */
-	override fun isAcceptable(db: DBWrapper) = db.get(twiceHashedNick).isEmpty()
+	override fun isAcceptable(db: DBWrapper) = !db.containsKey(twiceHashedNick)
 
 	override fun store(db: DBWrapper) = db.put(twiceHashedNick, signedHashedNick)
 

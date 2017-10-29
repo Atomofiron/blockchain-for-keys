@@ -11,7 +11,7 @@ internal class KeyEntry(private val publicKey: ByteArray) :  Entry {
 
 	override fun entryHashHex() = entryKeyHex()
 
-	override fun isAcceptable(db: DBWrapper) = db.get(id).isEmpty()
+	override fun isAcceptable(db: DBWrapper) = !db.containsKey(id)
 
 	override fun store(db: DBWrapper) = db.put(id, publicKey)
 
