@@ -13,7 +13,7 @@ class NickEntry(nick: String, private val id: ByteArray) : Entry {
 
 	override fun isAcceptable(db: DBWrapper): Boolean {
 		// ник не был зарегистрирован ранее, и на данный id никакой ник не зарегистрирован
-		if (db.containsValue(id))
+		if (db.containsKey(hashedNick) || db.containsValue(id))
 			return false
 
 		val signature = db.get(ByteUtils.hash(hashedNick))
